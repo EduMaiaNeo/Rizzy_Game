@@ -245,7 +245,7 @@
             { question: "√1 = ?", answer: "1" }
         ];
         
-        const squareRootQuestions = [
+        const squareExponentialQuestions = [
             { question: "9² = ?", answer: "81" },
             { question: "8² = ?", answer: "64" },
             { question: "7² = ?", answer: "49" },
@@ -257,7 +257,7 @@
             { question: "1² = ?", answer: "1" }
         ];
         
-        const squareRootQuestions = [
+        const cubicExponentialQuestions = [
             { question: "9³ = ?", answer: "729" },
             { question: "8³ = ?", answer: "512" },
             { question: "7³ = ?", answer: "343" },
@@ -286,6 +286,8 @@
             ...multiplicationTables,
             ...primeQuestions,
             ...squareRootQuestions,
+            ...squareExponentialQuestions,
+            ...cubicExponentialQuestions,
             ...cubicRootQuestions
         ];
         
@@ -350,10 +352,10 @@
             
             if (userAnswer === currentAnswer) {
                 score++;
-                flashFeedback('correct');
+                flashFeedback('correto');
             } else {
                 score = Math.max(0, score - 1);
-                flashFeedback('incorrect');
+                flashFeedback('errado');
             }
             
             updateScore();
@@ -396,7 +398,7 @@
         
         function closeGame() {
             // In a real app, you might close the window or redirect
-            alert('Game closed. Thanks for playing RIZZY GAME!');
+            alert('Fim do Jogo. Obrigado por jogar RIZZY GAME!');
         }
         
         // Start the game when the page loads
