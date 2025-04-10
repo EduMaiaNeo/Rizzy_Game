@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RIZZY GAME</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@500;700&display=swap');
+        
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background-color: #0f0e17;
+            color: #fffffe;
+            overflow: hidden;
+        }
+        
+        .cyberpunk-border {
+            position: relative;
+            border: 2px solid transparent;
+            border-image: linear-gradient(45deg, #ff2a6d, #05d9e8, #d300c5, #05d9e8);
+            border-image-slice: 1;
+            box-shadow: 0 0 20px rgba(5, 217, 232, 0.3),
+                        0 0 40px rgba(213, 0, 197, 0.2),
+                        inset 0 0 20px rgba(255, 42, 109, 0.1);
+        }
+        
+        .cyberpunk-glow {
+            text-shadow: 0 0 5px #05d9e8, 0 0 10px #d300c5;
+        }
+        
+        .cyberpunk-btn {
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px rgba(5, 217, 232, 0.5);
+        }
+        
+        .cyberpunk-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 15px rgba(255, 42, 109, 0.7);
+        }
+        
+        .cyberpunk-btn:active {
+            transform: translateY(1px);
+        }
+        
+        .glass-effect {
+            background: rgba(15, 14, 23, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .display-text {
+            font-family: 'Orbitron', sans-serif;
+            text-shadow: 0 0 5px #05d9e8;
+        }
+        
+        .neon-pink {
+            color: #ff2a6d;
+            text-shadow: 0 0 5px #ff2a6d;
+        }
+        
+        .neon-blue {
+            color: #05d9e8;
+            text-shadow: 0 0 5px #05d9e8;
+        }
+        
+        .neon-purple {
+            color: #d300c5;
+            text-shadow: 0 0 5px #d300c5;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .pulse-animation {
+            animation: pulse 2s infinite;
+        }
+    </style>
+</head>
+<body class="h-screen flex items-center justify-center">
+    <div id="game-container" class="w-full max-w-md mx-auto">
+        <!-- Main Game Screen -->
+        <div id="main-game" class="cyberpunk-border rounded-xl p-6 glass-effect">
+            <!-- Score Display -->
+            <div class="flex justify-between items-center mb-4">
+                <div class="text-xl font-bold neon-pink">RIZZY GAME</div>
+                <div class="text-xl font-bold neon-blue">SCORE: <span id="score">0</span></div>
+            </div>
+            
+            <!-- Question Display -->
+            <div class="mb-4 p-4 bg-black bg-opacity-50 rounded-lg border border-cyan-400 border-opacity-30">
+                <div id="question" class="text-xl font-bold text-center neon-purple h-8">Ready to play?</div>
+            </div>
+            
+            <!-- Calculator Display -->
+            <div class="mb-6 p-4 bg-black bg-opacity-70 rounded-lg border border-purple-500 border-opacity-30 display-text">
+                <div id="display" class="text-right text-3xl h-10">0</div>
+            </div>
+            
+            <!-- Calculator Keys -->
+            <div class="grid grid-cols-4 gap-3 mb-4">
+                <button onclick="appendToDisplay('7')" class="cyberpunk-btn bg-gray-900 text-white py-3 rounded-lg font-bold text-xl">7</button>
+                <button onclick="appendToDisplay('8')" class="cyberpunk-btn bg-gray-900 text-white py-3 rounded-lg font-bold text-xl">8</button>
+                <button onclick="appendToDisplay('9')" class="cyberpunk-btn bg-gray-900 text-white py-3 rounded-lg font-bold text-xl">9</button>
+                <button onclick="clearDisplay()" class="cyberpunk-btn bg-red-600 text-white py-3 rounded-lg font-bold text-xl">C</button>
+                
+                <button onclick="appendToDisplay('4')" class="cyberpunk-btn bg-gray-900 text-white py-3 rounded-lg font-bold text-xl">4</button>
+                <button onclick="appendToDisplay('5')" class="cyberpunk-btn bg-gray-900 text-white py-3 rounded-lg font-bold text-xl">5</button>
+                <button onclick="appendToDisplay('6')" class="cyberpunk-btn bg-gray-900 text-white py-3 rounded-lg font-bold text-xl">6</button>
+                <button onclick="correctAnswer()" class="cyberpunk-btn bg-yellow-500 text-white py-3 rounded-lg font-bold text-xl">Corrigir</button>
+                
+                <button onclick="appendToDisplay('1')" class="cyberpunk-btn bg-gray-900 text-white py-3 rounded-lg font-bold text-xl">1</button>
+                <button onclick="appendToDisplay('2')" class="cyberpunk-btn bg-gray-900 text-white py-3 rounded-lg font-bold text-xl">2</button>
+                <button onclick="appendToDisplay('3')" class="cyberpunk-btn bg-gray-900 text-white py-3 rounded-lg font-bold text-xl">3</button>
+                <button onclick="checkAnswer()" class="cyberpunk-btn bg-green-600 text-white py-3 rounded-lg font-bold text-xl">Enter</button>
+                
+                <button onclick="appendToDisplay('0')" class="cyberpunk-btn bg-gray-900 text-white py-3 rounded-lg font-bold text-xl">0</button>
+                <button onclick="appendToDisplay('.')" class="cyberpunk-btn bg-gray-900 text-white py-3 rounded-lg font-bold text-xl">.</button>
+                <button onclick="toggleNegative()" class="cyberpunk-btn bg-gray-900 text-white py-3 rounded-lg font-bold text-xl">±</button>
+                <button onclick="finishGame()" class="cyberpunk-btn bg-purple-600 text-white py-3 rounded-lg font-bold text-xl">Finalizar</button>
+            </div>
+        </div>
+        
+        <!-- Game Over Screen (Hidden Initially) -->
+        <div id="game-over" class="hidden cyberpunk-border rounded-xl p-8 glass-effect text-center">
+            <div class="mb-6">
+                <h1 class="text-4xl font-bold neon-pink mb-2">RIZZY GAME</h1>
+                <div class="text-xl neon-blue cyberpunk-glow pulse-animation">CONGRATULATIONS</div>
+            </div>
+            
+            <div class="my-8">
+                <div class="text-2xl mb-2 neon-purple">Your final score:</div>
+                <div id="final-score" class="text-5xl font-bold neon-blue cyberpunk-glow">0</div>
+            </div>
+            
+            <div class="text-lg mb-8">
+                <p class="neon-purple">Great job, Rizzy!</p>
+                <p class="text-white">You've shown impressive math skills!</p>
+            </div>
+            
+            <div class="grid grid-cols-2 gap-4">
+                <button onclick="newGame()" class="cyberpunk-btn bg-green-600 text-white py-3 rounded-lg font-bold text-lg">Novo Jogo</button>
+                <button onclick="closeGame()" class="cyberpunk-btn bg-red-600 text-white py-3 rounded-lg font-bold text-lg">Fechar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Game variables
+        let score = 0;
+        let currentQuestion = '';
+        let currentAnswer = '';
+        let gameActive = false;
+        
+        // Question banks
+        const multiplicationTables = [
+            { question: "3 × 1 = ?", answer: "3" },
+            { question: "3 × 2 = ?", answer: "6" },
+            { question: "3 × 3 = ?", answer: "9" },
+            { question: "3 × 4 = ?", answer: "12" },
+            { question: "3 × 5 = ?", answer: "15" },
+            { question: "3 × 6 = ?", answer: "18" },
+            { question: "3 × 7 = ?", answer: "21" },
+            { question: "3 × 8 = ?", answer: "24" },
+            { question: "3 × 9 = ?", answer: "27" },
+            { question: "3 × 10 = ?", answer: "30" },
+            { question: "4 × 1 = ?", answer: "4" },
+            { question: "4 × 2 = ?", answer: "8" },
+            { question: "4 × 3 = ?", answer: "12" },
+            { question: "4 × 4 = ?", answer: "16" },
+            { question: "4 × 5 = ?", answer: "20" },
+            { question: "4 × 6 = ?", answer: "24" },
+            { question: "4 × 7 = ?", answer: "28" },
+            { question: "4 × 8 = ?", answer: "32" },
+            { question: "4 × 9 = ?", answer: "36" },
+            { question: "4 × 10 = ?", answer: "40" },
+            { question: "6 × 1 = ?", answer: "6" },
+            { question: "6 × 2 = ?", answer: "12" },
+            { question: "6 × 3 = ?", answer: "18" },
+            { question: "6 × 4 = ?", answer: "24" },
+            { question: "6 × 5 = ?", answer: "30" },
+            { question: "6 × 6 = ?", answer: "36" },
+            { question: "6 × 7 = ?", answer: "42" },
+            { question: "6 × 8 = ?", answer: "48" },
+            { question: "6 × 9 = ?", answer: "54" },
+            { question: "6 × 10 = ?", answer: "60" },
+            { question: "7 × 1 = ?", answer: "7" },
+            { question: "7 × 2 = ?", answer: "14" },
+            { question: "7 × 3 = ?", answer: "21" },
+            { question: "7 × 4 = ?", answer: "28" },
+            { question: "7 × 5 = ?", answer: "35" },
+            { question: "7 × 6 = ?", answer: "42" },
+            { question: "7 × 7 = ?", answer: "49" },
+            { question: "7 × 8 = ?", answer: "56" },
+            { question: "7 × 9 = ?", answer: "63" },
+            { question: "7 × 10 = ?", answer: "70" },
+            { question: "8 × 1 = ?", answer: "8" },
+            { question: "8 × 2 = ?", answer: "16" },
+            { question: "8 × 3 = ?", answer: "24" },
+            { question: "8 × 4 = ?", answer: "32" },
+            { question: "8 × 5 = ?", answer: "40" },
+            { question: "8 × 6 = ?", answer: "48" },
+            { question: "8 × 7 = ?", answer: "56" },
+            { question: "8 × 8 = ?", answer: "64" },
+            { question: "8 × 9 = ?", answer: "72" },
+            { question: "8 × 10 = ?", answer: "80" },
+            { question: "9 × 1 = ?", answer: "9" },
+            { question: "9 × 2 = ?", answer: "18" },
+            { question: "9 × 3 = ?", answer: "27" },
+            { question: "9 × 4 = ?", answer: "36" },
+            { question: "9 × 5 = ?", answer: "45" },
+            { question: "9 × 6 = ?", answer: "54" },
+            { question: "9 × 7 = ?", answer: "63" },
+            { question: "9 × 8 = ?", answer: "72" },
+            { question: "9 × 9 = ?", answer: "81" },
+            { question: "9 × 10 = ?", answer: "90" }
+        ];
+        
+        const primeQuestions = [
+            { question: "Quais os números primos entre 1 e 10? (use o sinal ( + ) entre os números)", answer: "2+3+5+7" },
+            { question: "Quais os números primos entre 10 e 20? (use o sinal ( + ) entre os números)", answer: "11+13+17+19" },
+            { question: "Quais os números primos entre 20 e 30? (use o sinal ( + ) entre os números)", answer: "23+29" },
+            { question: "Quais os números primos entre 30 e 40? (use o sinal ( + ) entre os números)", answer: "31+37" },
+            { question: "Quais os números primos entre 40 e 50? (use o sinal ( + ) entre os números)", answer: "41+43+47" },
+            { question: "Quais os números primos entre 50 e 60? (use o sinal ( + ) entre os números)", answer: "53+59" },
+            { question: "Quais os números primos entre 60 e 70? (use o sinal ( + ) entre os números)", answer: "61+67" },
+            { question: "Quais os números primos entre 70 e 80? (use o sinal ( + ) entre os números)", answer: "71+73+79" },
+            { question: "Quais os números primos entre 80 e 90? (use o sinal ( + ) entre os números)", answer: "83+89" },
+            { question: "Quais os números primos entre 90 e 100? (use o sinal ( + ) entre os números)", answer: "97" }
+        ];
+        
+        const squareRootQuestions = [
+            { question: "√81 = ?", answer: "9" },
+            { question: "√64 = ?", answer: "8" },
+            { question: "√49 = ?", answer: "7" },
+            { question: "√36 = ?", answer: "6" },
+            { question: "√25 = ?", answer: "5" },
+            { question: "√16 = ?", answer: "4" },
+            { question: "√9 = ?", answer: "3" },
+            { question: "√4 = ?", answer: "2" },
+            { question: "√1 = ?", answer: "1" }
+        ];
+        
+        const squareRootQuestions = [
+            { question: "9² = ?", answer: "81" },
+            { question: "8² = ?", answer: "64" },
+            { question: "7² = ?", answer: "49" },
+            { question: "6² = ?", answer: "36" },
+            { question: "5² = ?", answer: "25" },
+            { question: "4² = ?", answer: "16" },
+            { question: "3² = ?", answer: "9" },
+            { question: "2² = ?", answer: "4" },
+            { question: "1² = ?", answer: "1" }
+        ];
+        
+        const squareRootQuestions = [
+            { question: "9³ = ?", answer: "729" },
+            { question: "8³ = ?", answer: "512" },
+            { question: "7³ = ?", answer: "343" },
+            { question: "6³ = ?", answer: "216" },
+            { question: "5³ = ?", answer: "125" },
+            { question: "4³ = ?", answer: "64" },
+            { question: "3³ = ?", answer: "27" },
+            { question: "2³ = ?", answer: "8" },
+            { question: "1³ = ?", answer: "1" }
+        ];
+        
+        const cubicRootQuestions = [
+            { question: "∛729 = ?", answer: "9" },
+            { question: "∛512 = ?", answer: "8" },
+            { question: "∛343 = ?", answer: "7" },
+            { question: "∛216 = ?", answer: "6" },
+            { question: "∛125 = ?", answer: "5" },
+            { question: "∛64 = ?", answer: "4" },
+            { question: "∛27 = ?", answer: "3" },
+            { question: "∛8 = ?", answer: "2" },
+            { question: "∛1 = ?", answer: "1" }
+        ];
+        
+        // Combined question bank
+        const allQuestions = [
+            ...multiplicationTables,
+            ...primeQuestions,
+            ...squareRootQuestions,
+            ...cubicRootQuestions
+        ];
+        
+        // Initialize the game
+        function initGame() {
+            gameActive = true;
+            score = 0;
+            updateScore();
+            generateQuestion();
+        }
+        
+        // Generate a random question
+        function generateQuestion() {
+            if (!gameActive) return;
+            
+            const randomIndex = Math.floor(Math.random() * allQuestions.length);
+            currentQuestion = allQuestions[randomIndex].question;
+            currentAnswer = allQuestions[randomIndex].answer;
+            
+            document.getElementById('question').textContent = currentQuestion;
+            clearDisplay();
+        }
+        
+        // Update score display
+        function updateScore() {
+            document.getElementById('score').textContent = score;
+        }
+        
+        // Calculator functions
+        function appendToDisplay(value) {
+            const display = document.getElementById('display');
+            if (display.textContent === '0' && value !== '.') {
+                display.textContent = value;
+            } else {
+                display.textContent += value;
+            }
+        }
+        
+        function clearDisplay() {
+            document.getElementById('display').textContent = '0';
+        }
+        
+        function correctAnswer() {
+            clearDisplay();
+        }
+        
+        function toggleNegative() {
+            const display = document.getElementById('display');
+            if (display.textContent.startsWith('-')) {
+                display.textContent = display.textContent.substring(1);
+            } else if (display.textContent !== '0') {
+                display.textContent = '-' + display.textContent;
+            }
+        }
+        
+        // Check the answer
+        function checkAnswer() {
+            if (!gameActive) return;
+            
+            const display = document.getElementById('display');
+            const userAnswer = display.textContent;
+            
+            if (userAnswer === currentAnswer) {
+                score++;
+                flashFeedback('correct');
+            } else {
+                score = Math.max(0, score - 1);
+                flashFeedback('incorrect');
+            }
+            
+            updateScore();
+            setTimeout(generateQuestion, 1000);
+        }
+        
+        // Visual feedback for correct/incorrect answers
+        function flashFeedback(type) {
+            const display = document.getElementById('display');
+            const originalText = display.textContent;
+            
+            if (type === 'correct') {
+                display.classList.add('neon-blue');
+                display.textContent = '✓ Correct!';
+            } else {
+                display.classList.add('neon-pink');
+                display.textContent = `✗ Correct: ${currentAnswer}`;
+            }
+            
+            setTimeout(() => {
+                display.textContent = originalText;
+                display.classList.remove('neon-blue', 'neon-pink');
+            }, 800);
+        }
+        
+        // Finish the game
+        function finishGame() {
+            gameActive = false;
+            document.getElementById('main-game').classList.add('hidden');
+            document.getElementById('game-over').classList.remove('hidden');
+            document.getElementById('final-score').textContent = score;
+        }
+        
+        // Game over screen functions
+        function newGame() {
+            document.getElementById('main-game').classList.remove('hidden');
+            document.getElementById('game-over').classList.add('hidden');
+            initGame();
+        }
+        
+        function closeGame() {
+            // In a real app, you might close the window or redirect
+            alert('Game closed. Thanks for playing RIZZY GAME!');
+        }
+        
+        // Start the game when the page loads
+        window.onload = initGame;
+    </script>
+</body>
+</html>
