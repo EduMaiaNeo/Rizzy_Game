@@ -79,6 +79,20 @@
         .pulse-animation {
             animation: pulse 2s infinite;
         }
+        
+        /* New animation for correct answers */
+        @keyframes correctGlow {
+            0% { box-shadow: 0 0 5px #05d9e8; }
+            50% { box-shadow: 0 0 20px #05d9e8; }
+            100% { box-shadow: 0 0 5px #05d9e8; }
+        }
+        
+        /* New animation for wrong answers */
+        @keyframes wrongGlow {
+            0% { box-shadow: 0 0 5px #ff2a6d; }
+            50% { box-shadow: 0 0 20px #ff2a6d; }
+            100% { box-shadow: 0 0 5px #ff2a6d; }
+        }
     </style>
 </head>
 <body class="h-screen flex items-center justify-center">
@@ -91,9 +105,9 @@
                 <div class="text-xl font-bold neon-blue">SCORE: <span id="score">0</span></div>
             </div>
             
-            <!-- Question Display -->
-            <div class="mb-4 p-4 bg-black bg-opacity-50 rounded-lg border border-cyan-400 border-opacity-30">
-                <div id="question" class="text-xl font-bold text-center neon-purple h-8">Ready to play?</div>
+            <!-- Question Display - Increased font size here -->
+            <div class="mb-4 p-4 bg-black bg-opacity-50 rounded-lg border border-cyan-400 border-opacity-30 min-h-24 flex items-center justify-center">
+                <div id="question" class="text-2xl md:text-3xl font-bold text-center neon-purple">Ready to play?</div>
             </div>
             
             <!-- Calculator Display -->
@@ -129,17 +143,17 @@
         <div id="game-over" class="hidden cyberpunk-border rounded-xl p-8 glass-effect text-center">
             <div class="mb-6">
                 <h1 class="text-4xl font-bold neon-pink mb-2">RIZZY GAME</h1>
-                <div class="text-xl neon-blue cyberpunk-glow pulse-animation">CONGRATULATIONS</div>
+                <div class="text-xl neon-blue cyberpunk-glow pulse-animation">PARABÉNS</div>
             </div>
             
             <div class="my-8">
-                <div class="text-2xl mb-2 neon-purple">Your final score:</div>
+                <div class="text-2xl mb-2 neon-purple">Score final:</div>
                 <div id="final-score" class="text-5xl font-bold neon-blue cyberpunk-glow">0</div>
             </div>
             
             <div class="text-lg mb-8">
-                <p class="neon-purple">Great job, Rizzy!</p>
-                <p class="text-white">You've shown impressive math skills!</p>
+                <p class="neon-purple">Grande jogo, Rizzy!</p>
+                <p class="text-white">Continue assim e a vaga de medicina é sua!</p>
             </div>
             
             <div class="grid grid-cols-2 gap-4">
@@ -365,19 +379,23 @@
         // Visual feedback for correct/incorrect answers
         function flashFeedback(type) {
             const display = document.getElementById('display');
+            const questionBox = document.getElementById('question').parentElement;
             const originalText = display.textContent;
             
-            if (type === 'correct') {
+            if (type === 'correto') {
                 display.classList.add('neon-blue');
+                questionBox.style.animation = 'correctGlow 1s';
                 display.textContent = '✓ Correct!';
             } else {
                 display.classList.add('neon-pink');
-                display.textContent = `✗ Correct: ${currentAnswer}`;
+                questionBox.style.animation = 'wrongGlow 1s';
+                display.textContent = `✗ Errado: ${currentAnswer}`;
             }
-            
+
             setTimeout(() => {
                 display.textContent = originalText;
                 display.classList.remove('neon-blue', 'neon-pink');
+                questionBox.style.animation = '';
             }, 800);
         }
         
