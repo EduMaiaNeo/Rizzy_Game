@@ -103,6 +103,7 @@
             <div class="flex justify-between items-center mb-4">
                 <div class="text-xl font-bold neon-pink">RIZZY GAME</div>
                 <div class="text-xl font-bold neon-blue">SCORE: <span id="score">0</span></div>
+                <button onclick="finishGame()" class="cyberpunk-btn bg-purple-600 text-white py-3 rounded-lg font-bold text-xl">.Finalizar partida.</button>
             </div>
             
             <!-- Question Display - Increased font size here -->
@@ -125,17 +126,15 @@
                 <button onclick="appendToDisplay('4')" class="cyberpunk-btn bg-gray-900 text-white py-3 rounded-lg font-bold text-xl">4</button>
                 <button onclick="appendToDisplay('5')" class="cyberpunk-btn bg-gray-900 text-white py-3 rounded-lg font-bold text-xl">5</button>
                 <button onclick="appendToDisplay('6')" class="cyberpunk-btn bg-gray-900 text-white py-3 rounded-lg font-bold text-xl">6</button>
-                <button onclick="correctAnswer()" class="cyberpunk-btn bg-yellow-500 text-white py-3 rounded-lg font-bold text-xl">Corrigir</button>
+                <button onclick="checkAnswer()" class="cyberpunk-btn bg-green-600 text-white py-3 rounded-lg font-bold text-xl row-span-3">Enter</button>
                 
                 <button onclick="appendToDisplay('1')" class="cyberpunk-btn bg-gray-900 text-white py-3 rounded-lg font-bold text-xl">1</button>
                 <button onclick="appendToDisplay('2')" class="cyberpunk-btn bg-gray-900 text-white py-3 rounded-lg font-bold text-xl">2</button>
                 <button onclick="appendToDisplay('3')" class="cyberpunk-btn bg-gray-900 text-white py-3 rounded-lg font-bold text-xl">3</button>
-                <button onclick="checkAnswer()" class="cyberpunk-btn bg-green-600 text-white py-3 rounded-lg font-bold text-xl">Enter</button>
                 
-                <button onclick="appendToDisplay('0')" class="cyberpunk-btn bg-gray-900 text-white py-3 rounded-lg font-bold text-xl">0</button>
                 <button onclick="appendToDisplay('.')" class="cyberpunk-btn bg-gray-900 text-white py-3 rounded-lg font-bold text-xl">.</button>
+                <button onclick="appendToDisplay('0')" class="cyberpunk-btn bg-gray-900 text-white py-3 rounded-lg font-bold text-xl">0</button>
                 <button onclick="toggleNegative()" class="cyberpunk-btn bg-gray-900 text-white py-3 rounded-lg font-bold text-xl">±</button>
-                <button onclick="finishGame()" class="cyberpunk-btn bg-purple-600 text-white py-3 rounded-lg font-bold text-xl">Finalizar</button>
             </div>
         </div>
         
@@ -153,7 +152,7 @@
             
             <div class="text-lg mb-8">
                 <p class="neon-purple">Grande jogo, Rizzy!</p>
-                <p class="text-white">Continue assim e a vaga de medicina é sua!</p>
+                <p class="text-white">Continue assim e a vaga de medicina será sua!</p>
             </div>
             
             <div class="grid grid-cols-2 gap-4">
